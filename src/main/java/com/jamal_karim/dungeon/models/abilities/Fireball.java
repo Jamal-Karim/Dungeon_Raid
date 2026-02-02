@@ -8,8 +8,17 @@ public class Fireball implements Ability {
 
     @Override
     public void execute(Entity caster, BattleContext context) {
-        Entity target = context.getCurrentTarget();
-        target.takeDamage(20);
-        caster.reduceMana(manaTaken);
+        if(caster.canAffordAbility(caster, this)){
+            caster.reduceMana(manaTaken);
+            Entity target = context.getCurrentTarget();
+            target.takeDamage(20);
+        } else {
+            System.out.println("Caster does not have enough mana");
+        }
+    }
+
+    @Override
+    public int getManaTaken(Ability ability) {
+        return this.manaTaken;
     }
 }

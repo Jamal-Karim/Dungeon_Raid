@@ -9,10 +9,20 @@ public class Poison implements Ability{
 
     @Override
     public void execute(Entity caster, BattleContext context) {
-        PoisonEffect poisonEffect = new PoisonEffect();
 
-        Entity target = context.getCurrentTarget();
-        target.addEffect(poisonEffect);
-        caster.reduceMana(manaTaken);
+        if(caster.canAffordAbility(caster, this)){
+            PoisonEffect poisonEffect = new PoisonEffect();
+
+            caster.reduceMana(manaTaken);
+            Entity target = context.getCurrentTarget();
+            target.addEffect(poisonEffect);
+        } else {
+            System.out.println("Caster does not have enough mana");
+        }
+    }
+
+    @Override
+    public int getManaTaken(Ability ability) {
+        return this.manaTaken;
     }
 }

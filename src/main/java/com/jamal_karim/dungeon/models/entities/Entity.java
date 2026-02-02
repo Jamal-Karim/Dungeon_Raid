@@ -12,14 +12,16 @@ abstract public class Entity {
     private int hp;
     private int mana;
     private int damage;
+    private String team;
     private List<Effect> activeEffects;
 
-    public Entity(String name, int hp, int mana, int damage) {
+    public Entity(String name, int hp, int mana, int damage, String team) {
         this.name = name;
         this.hp = hp;
         this.maxHp = hp;
         this.mana = mana;
         this.damage = damage;
+        this.team = team;
         this.activeEffects = new ArrayList<>();
     }
 
@@ -68,5 +70,13 @@ abstract public class Entity {
 
     public void reduceMana(int mana) {
         this.mana = mana;
+    }
+
+    public boolean canAffordAbility(Entity caster, Ability ability){
+        return ability.getManaTaken(ability) <= caster.getMana();
+    }
+
+    public String getTeam() {
+        return team;
     }
 }

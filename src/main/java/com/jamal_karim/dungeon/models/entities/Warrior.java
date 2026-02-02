@@ -6,8 +6,8 @@ public class Warrior extends Entity {
 
     private boolean superAttack;
 
-    public Warrior(String name) {
-        super(name, 200, 50, 25);
+    public Warrior(String name, String team) {
+        super(name, 200, 50, 25, team);
         this.superAttack = false;
     }
 
@@ -15,6 +15,7 @@ public class Warrior extends Entity {
     public void playTurn(BattleContext context) {
         this.processEffects(this.getActiveEffects());
 
+        context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
         Entity target = context.getCurrentTarget();
 
         if(this.getHp() < 10){this.superAttack = true;}

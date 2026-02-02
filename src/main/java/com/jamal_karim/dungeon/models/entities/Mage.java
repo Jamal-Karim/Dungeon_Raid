@@ -6,23 +6,25 @@ import com.jamal_karim.dungeon.models.abilities.Fireball;
 import com.jamal_karim.dungeon.models.abilities.Poison;
 
 public class Mage extends Entity {
-    private Ability Poison = new Poison();
-    private Ability Fireball = new Fireball();
+    private Ability poison = new Poison();
+    private Ability fireball = new Fireball();
 
-    public Mage(String name) {
-        super(name, 150, 100, 10);
+    public Mage(String name, String team) {
+        super(name, 150, 100, 10, team);
     }
 
     @Override
     public void playTurn(BattleContext context) {
         this.processEffects(this.getActiveEffects());
+
+        context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
         Entity target = context.getCurrentTarget();
 
         if(target.getHp() > target.getMaxHp() / 2 && this.getMana() > 20){
             this.attack(target, this.getDamage());
-            Poison.execute(this, context);
+            poison.execute(this, context);
         } else if(this.getMana() > 10){
-            Fireball.execute(this, context);
+            fireball.execute(this, context);
         } else{
             this.attack(target, this.getDamage());
         }

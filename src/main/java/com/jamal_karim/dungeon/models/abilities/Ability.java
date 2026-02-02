@@ -5,4 +5,6 @@ import com.jamal_karim.dungeon.models.entities.Entity;
 
 public interface Ability {
     void execute(Entity caster, BattleContext context);
+
+    int getManaTaken(Ability ability);
 }
