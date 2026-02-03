@@ -50,4 +50,16 @@ public class BattleContext {
     public List<Entity> getAlliesOf(Entity character){
         return teamA.contains(character) ? teamA.stream().filter(e -> e != character).toList() : teamB.stream().filter(e -> e != character).toList();
     }
+
+    public boolean checkForWinner(){
+        if(teamA.size() == 0){
+            System.out.println("team b wins");
+            return true;
+        } else if(teamB.size() == 0){
+            System.out.println("team a wins");
+            return true;
+        } else{
+            return false;
+        }
+    }
 }

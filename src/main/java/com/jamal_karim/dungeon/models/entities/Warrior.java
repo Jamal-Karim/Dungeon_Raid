@@ -7,7 +7,7 @@ public class Warrior extends Entity {
     private boolean superAttack;
 
     public Warrior(String name, String team) {
-        super(name, 200, 50, 25, team);
+        super(name, 50, 50, 25, team);
         this.superAttack = false;
     }
 
@@ -26,6 +26,10 @@ public class Warrior extends Entity {
             this.attack(target, 35);
         } else{
             this.attack(target, 25);
+        }
+
+        if(!target.isAlive()){
+            context.getEnemiesOf(this).remove(target);
         }
     }
 

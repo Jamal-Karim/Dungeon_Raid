@@ -10,7 +10,7 @@ public class Mage extends Entity {
     private Ability fireball = new Fireball();
 
     public Mage(String name, String team) {
-        super(name, 150, 100, 10, team);
+        super(name, 20, 100, 10, team);
     }
 
     @Override
@@ -27,6 +27,10 @@ public class Mage extends Entity {
             fireball.execute(this, context);
         } else{
             this.attack(target, this.getDamage());
+        }
+
+        if(!target.isAlive()){
+            context.getEnemiesOf(this).remove(target);
         }
     }
 

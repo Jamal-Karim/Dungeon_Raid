@@ -79,4 +79,8 @@ abstract public class Entity {
     public String getTeam() {
         return team;
     }
+
+    public boolean isAlive(){
+        return hp > 0;
+    }
 }

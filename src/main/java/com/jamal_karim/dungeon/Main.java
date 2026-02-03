@@ -7,16 +7,22 @@ import com.jamal_karim.dungeon.models.entities.Warrior;
 
 public class Main {
     public static void main(String[] args) {
-        Entity warrior = new Warrior("warrior", "hero");
-        Entity mage = new Mage("mage", "monster");
+        Entity warrior = new Warrior("warrior", "monster");
+        Entity mage = new Mage("mage", "hero");
 
         BattleContext context = new BattleContext();
         context.addToTeam(warrior, warrior.getTeam());
         context.addToTeam(mage, mage.getTeam());
 
-        warrior.playTurn(context);
-        System.out.println(mage.getHp());
-        mage.playTurn(context);
-        System.out.println(warrior.getHp());
+        while (true){
+            if(context.checkForWinner()){
+                return;
+            }
+            mage.playTurn(context);
+            if(context.checkForWinner()){
+                return;
+            }
+            warrior.playTurn(context);
+        }
     }
 }
