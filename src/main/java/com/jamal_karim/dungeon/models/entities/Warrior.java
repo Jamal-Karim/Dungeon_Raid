@@ -7,7 +7,7 @@ public class Warrior extends Entity {
     private boolean superAttack;
 
     public Warrior(String name, String team) {
-        super(name, 50, 50, 25, team);
+        super(name, 50, 50, 25, team, 50);
         this.superAttack = false;
     }
 
@@ -22,6 +22,7 @@ public class Warrior extends Entity {
 
         if(this.getHp() < 10 && this.superAttack){
             executeSuperAttack(target);
+            this.superAttack = false;
         } else if (target instanceof Tank) {
             this.attack(target, 35);
         } else{

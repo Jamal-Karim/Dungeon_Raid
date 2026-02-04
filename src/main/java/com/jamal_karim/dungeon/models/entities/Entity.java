@@ -14,14 +14,16 @@ abstract public class Entity {
     private int damage;
     private String team;
     private List<Effect> activeEffects;
+    private int speed;
 
-    public Entity(String name, int hp, int mana, int damage, String team) {
+    public Entity(String name, int hp, int mana, int damage, String team, int speed) {
         this.name = name;
         this.hp = hp;
         this.maxHp = hp;
         this.mana = mana;
         this.damage = damage;
         this.team = team;
+        this.speed = speed;
         this.activeEffects = new ArrayList<>();
     }
 
@@ -82,5 +84,9 @@ abstract public class Entity {
 
     public boolean isAlive(){
         return hp > 0;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 }

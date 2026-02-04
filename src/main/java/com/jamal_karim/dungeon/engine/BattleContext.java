@@ -62,4 +62,12 @@ public class BattleContext {
             return false;
         }
     }
+
+    public List<Entity> getTeamA() {
+        return teamA;
+    }
+
+    public List<Entity> getTeamB() {
+        return teamB;
+    }
 }

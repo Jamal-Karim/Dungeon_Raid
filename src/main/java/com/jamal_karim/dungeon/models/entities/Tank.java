@@ -5,7 +5,7 @@ import com.jamal_karim.dungeon.engine.BattleContext;
 public class Tank extends Entity {
 
     public Tank(String name, int hp, int mana, int damage, String team) {
-        super(name, hp, mana, damage, team);
+        super(name, hp, mana, damage, team, 10);
     }
 
     @Override
