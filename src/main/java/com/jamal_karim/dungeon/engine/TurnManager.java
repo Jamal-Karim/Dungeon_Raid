@@ -22,6 +22,7 @@ public class TurnManager {
     public void playTurns(){
 
         while(!context.checkForWinner()){
+            CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
             Entity e = orderOfCharacters.poll();
 
             if(e != null && e.isAlive()){
@@ -38,6 +39,8 @@ public class TurnManager {
     }
 
     public void cleanup(){
+
+        context.getAllEntities().stream().filter(entity -> !entity.isAlive()).forEach(context.getGraveyard()::add);
         context.getAllEntities().removeIf(entity -> !entity.isAlive());
     }
 

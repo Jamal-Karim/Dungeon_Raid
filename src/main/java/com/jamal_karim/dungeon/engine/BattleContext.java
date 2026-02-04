@@ -6,12 +6,17 @@ import com.jamal_karim.dungeon.models.entities.Entity;
 public class BattleContext {
     private Entity currentTarget;
     private List<Entity> allEntities = new ArrayList<>();
+    private List<Entity> graveyard = new ArrayList<>();
 
     public BattleContext() {
     }
 
     public List<Entity> getAllEntities() {
         return allEntities;
+    }
+
+    public List<Entity> getGraveyard() {
+        return graveyard;
     }
 
     public Entity getCurrentTarget() {
@@ -53,6 +58,7 @@ public class BattleContext {
         }
 
         if (activeTeams.size() == 1) {
+            CombatLogger.logBattleStatus(allEntities, graveyard);
             System.out.println("The winner is: " + activeTeams.iterator().next());
             return true;
         }
