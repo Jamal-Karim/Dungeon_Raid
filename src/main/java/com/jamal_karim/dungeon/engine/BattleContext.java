@@ -4,13 +4,14 @@ import java.util.*;
 import com.jamal_karim.dungeon.models.entities.Entity;
 
 public class BattleContext {
-    private List<Entity> teamA = new ArrayList<>();
-    private List<Entity> teamB = new ArrayList<>();
-
     private Entity currentTarget;
-
+    private List<Entity> allEntities = new ArrayList<>();
 
     public BattleContext() {
+    }
+
+    public List<Entity> getAllEntities() {
+        return allEntities;
     }
 
     public Entity getCurrentTarget() {
@@ -35,39 +36,26 @@ public class BattleContext {
         return target;
     }
 
-    public void addToTeam(Entity character, String team){
-        if(team.equalsIgnoreCase("hero")){
-            teamA.add(character);
-        } else{
-            teamB.add(character);
-        }
+    public void addToTeam(Entity character){
+        this.allEntities.add(character);
     }
 
     public List<Entity> getEnemiesOf(Entity character){
-        return teamA.contains(character) ? teamB : teamA;
+        return allEntities.stream().filter(entity -> !entity.getTeam().equals(character.getTeam())).toList();
     }
 
-    public List<Entity> getAlliesOf(Entity character){
-        return teamA.contains(character) ? teamA.stream().filter(e -> e != character).toList() : teamB.stream().filter(e -> e != character).toList();
-    }
+    public boolean checkForWinner() {
 
-    public boolean checkForWinner(){
-        if(teamA.size() == 0){
-            System.out.println("team b wins");
-            return true;
-        } else if(teamB.size() == 0){
-            System.out.println("team a wins");
-            return true;
-        } else{
-            return false;
+        Set<String> activeTeams = new HashSet<>();
+
+        for (Entity e : allEntities) {
+            activeTeams.add(e.getTeam());
         }
-    }
 
-    public List<Entity> getTeamA() {
-        return teamA;
-    }
-
-    public List<Entity> getTeamB() {
-        return teamB;
+        if (activeTeams.size() == 1) {
+            System.out.println("The winner is: " + activeTeams.iterator().next());
+            return true;
+        }
+        return activeTeams.isEmpty();
     }
 }

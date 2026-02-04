@@ -14,10 +14,10 @@ public class Main {
         BattleContext context = new BattleContext();
         TurnManager turns = new TurnManager(context);
 
-        context.addToTeam(warrior, warrior.getTeam());
-        context.addToTeam(mage, mage.getTeam());
+        context.addToTeam(warrior);
+        context.addToTeam(mage);
 
-        turns.setOrderOfCharacters(context.getTeamA(), context.getTeamB());
+        turns.setOrderOfCharacters(context.getAllEntities());
 
         turns.playTurns();
     }

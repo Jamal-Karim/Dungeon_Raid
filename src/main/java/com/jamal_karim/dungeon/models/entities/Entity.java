@@ -35,12 +35,12 @@ abstract public class Entity {
         return this.maxHp;
     }
 
-    public int getHp() {
-        return hp;
+    public String getName() {
+        return name;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    public int getHp() {
+        return hp;
     }
 
     public int getDamage() {
@@ -52,6 +52,9 @@ abstract public class Entity {
     }
 
     public void addEffect(Effect effect){
+
+        activeEffects.removeIf(e -> e.getName().equals(effect.getName()));
+
         this.activeEffects.add(effect);
     }
 
@@ -71,7 +74,7 @@ abstract public class Entity {
     }
 
     public void reduceMana(int mana) {
-        this.mana = mana;
+        this.mana -= mana;
     }
 
     public boolean canAffordAbility(Entity caster, Ability ability){

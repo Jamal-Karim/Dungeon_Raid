@@ -13,13 +13,10 @@ public class TurnManager {
         this.context = context;
     }
 
-    public void setOrderOfCharacters(List<Entity> teamA, List<Entity> teamB){
-        List<Entity> tmpList = new ArrayList<>();
-        tmpList.addAll(teamA);
-        tmpList.addAll(teamB);
-        tmpList.sort(Comparator.comparing(Entity::getSpeed).reversed());
-
-        this.orderOfCharacters = new LinkedList<>(tmpList);
+    public void setOrderOfCharacters(List<Entity> entities){
+        List<Entity> sortedCopy = new ArrayList<>(entities);
+        sortedCopy.sort(Comparator.comparing(Entity::getSpeed).reversed());
+        this.orderOfCharacters = new LinkedList<>(sortedCopy);
     }
 
     public void playTurns(){
@@ -28,13 +25,20 @@ public class TurnManager {
             Entity e = orderOfCharacters.poll();
 
             if(e != null && e.isAlive()){
+                CombatLogger.logStartOfTurn(e);
                 e.playTurn(context);
+
+                cleanup();
 
                 if(e.isAlive()){
                     orderOfCharacters.add(e);
                 }
             }
         }
+    }
+
+    public void cleanup(){
+        context.getAllEntities().removeIf(entity -> !entity.isAlive());
     }
 
 }

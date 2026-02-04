@@ -1,5 +1,6 @@
 package com.jamal_karim.dungeon.models.effects;
 
+import com.jamal_karim.dungeon.engine.CombatLogger;
 import com.jamal_karim.dungeon.models.entities.Entity;
 
 public class PoisonEffect implements Effect{
@@ -7,8 +8,14 @@ public class PoisonEffect implements Effect{
     private int duration = 3;
 
     @Override
+    public String getName() {
+        return "Poison Effect";
+    }
+
+    @Override
     public void applyTick(Entity target) {
         target.takeDamage(this.damagePerTurn);
+        CombatLogger.logEffect(target, "Poison", this.damagePerTurn);
         this.duration--;
     }
 
