@@ -27,7 +27,11 @@ public class TurnManager {
 
             if(e != null && e.isAlive()){
                 CombatLogger.logStartOfTurn(e);
-                e.playTurn(context);
+                if(e.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Stun Effect"))){
+                    e.processEffects(e.getActiveEffects());
+                } else{
+                    e.playTurn(context);
+                }
 
                 cleanup();
 

@@ -3,20 +3,19 @@ package com.jamal_karim.dungeon.models.effects;
 import com.jamal_karim.dungeon.engine.CombatLogger;
 import com.jamal_karim.dungeon.models.entities.Entity;
 
-public class PoisonEffect implements Effect{
-    private final int damagePerTurn = 5;
-    private int duration = 3;
+public class StunEffect implements Effect{
+    private int duration = 1;
+
 
     @Override
     public String getName() {
-        return "Poison Effect";
+        return "Stun Effect";
     }
 
     @Override
     public void applyTick(Entity target) {
-        target.takeDamage(this.damagePerTurn);
-        CombatLogger.logEffect(target, "Poison", this.damagePerTurn);
-        this.duration--;
+        CombatLogger.logAction(target, "is stunned for this round");
+        duration--;
     }
 
     @Override

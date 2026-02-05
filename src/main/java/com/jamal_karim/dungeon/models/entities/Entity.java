@@ -8,6 +8,7 @@ import java.util.*;
 
 abstract public class Entity {
     private final int maxHp;
+    private final int maxMana;
     private String name;
     private int hp;
     private int mana;
@@ -20,6 +21,7 @@ abstract public class Entity {
         this.name = name;
         this.hp = hp;
         this.maxHp = hp;
+        this.maxMana = mana;
         this.mana = mana;
         this.damage = damage;
         this.team = team;
@@ -33,6 +35,10 @@ abstract public class Entity {
 
     public int getMaxHp(){
         return this.maxHp;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
     }
 
     public String getName() {
@@ -91,5 +97,9 @@ abstract public class Entity {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 }

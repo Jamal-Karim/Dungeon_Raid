@@ -11,7 +11,7 @@ public class Mage extends Entity {
     private Ability fireball = new Fireball();
 
     public Mage(String name, String team) {
-        super(name, 120,1000, 10, team, 10);
+        super(name, 120,200, 10, team, 10);
     }
 
     @Override

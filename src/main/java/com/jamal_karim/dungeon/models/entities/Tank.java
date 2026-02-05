@@ -1,20 +1,70 @@
 package com.jamal_karim.dungeon.models.entities;
 
 import com.jamal_karim.dungeon.engine.BattleContext;
+import com.jamal_karim.dungeon.engine.CombatLogger;
+import com.jamal_karim.dungeon.models.effects.ShieldEffect;
+import com.jamal_karim.dungeon.models.effects.StunEffect;
 
 public class Tank extends Entity {
 
-    public Tank(String name, int hp, int mana, int damage, String team) {
-        super(name, hp, mana, damage, team, 10);
+    private final int manaForShield = 10;
+    private final int manaForStun = (int) (this.getMaxMana() * 0.75);
+
+    public Tank(String name, String team) {
+        super(name, 250, 100, 20, team, 10);
     }
 
     @Override
     public void playTurn(BattleContext context) {
+        this.processEffects(this.getActiveEffects());
+
+        context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
+        Entity target = context.getCurrentTarget();
+
+        if(this.getHp() < this.getMaxHp() / 2){
+            castShield();
+        } else if (target instanceof Mage && this.getMana() > manaForStun) {
+            castStun(target);
+        } else if (this.getMana() > manaForStun && this.getMana() - manaForStun >= manaForShield) {
+            castStun(target);
+        } else {
+            attack(target, this.getDamage());
+        }
+    }
+
+    public void castShield(){
+        if(this.getMana() > manaForShield){
+            ShieldEffect shield = new ShieldEffect();
+            this.addEffect(shield);
+            this.reduceMana(manaForShield);
+        } else{
+            System.out.println("Not enough mana for shield");
+        }
+    }
+
+    public void castStun(Entity enemy){
+        if(this.getMana() > manaForStun){
+            StunEffect stun = new StunEffect();
+            enemy.addEffect(stun);
+            this.reduceMana(manaForStun);
+        } else{
+            System.out.println("Not enough mana for stun");
+        }
 
     }
 
     @Override
     protected void attack(Entity enemy, int amount) {
+        enemy.takeDamage(amount);
+        CombatLogger.logAttack(this, enemy, "launches an attack");
+    }
 
+    @Override
+    public void takeDamage(int damage) {
+        if(this.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Shield Effect"))){
+            this.setHp((int) (this.getHp() - damage * 0.5));
+        } else{
+            this.setHp(this.getHp() - damage);
+        }
     }
 }
