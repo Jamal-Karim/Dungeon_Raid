@@ -16,16 +16,15 @@ public class Tank extends Entity {
 
     @Override
     public void playTurn(BattleContext context) {
-        this.processEffects(this.getActiveEffects());
 
         context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
         Entity target = context.getCurrentTarget();
 
-        if(this.getHp() < this.getMaxHp() / 2){
+        if(this.getHp() < this.getMaxHp() / 2 && this.getMana() >= manaForShield){
             castShield();
-        } else if (target instanceof Mage && this.getMana() > manaForStun) {
+        } else if (target instanceof Mage && this.getMana() >= manaForStun) {
             castStun(target);
-        } else if (this.getMana() > manaForStun && this.getMana() - manaForStun >= manaForShield) {
+        } else if (this.getMana() >= (manaForStun + manaForShield)) {
             castStun(target);
         } else {
             attack(target, this.getDamage());
@@ -33,24 +32,25 @@ public class Tank extends Entity {
     }
 
     public void castShield(){
-        if(this.getMana() > manaForShield){
+        if(this.getMana() >= manaForShield){
             ShieldEffect shield = new ShieldEffect();
             this.addEffect(shield);
             this.reduceMana(manaForShield);
+            CombatLogger.logAction(this, "raises a heavy shield!");
         } else{
             System.out.println("Not enough mana for shield");
         }
     }
 
     public void castStun(Entity enemy){
-        if(this.getMana() > manaForStun){
+        if(this.getMana() >= manaForStun){
             StunEffect stun = new StunEffect();
             enemy.addEffect(stun);
             this.reduceMana(manaForStun);
+            CombatLogger.logAttack(this, enemy, "launches stun");
         } else{
             System.out.println("Not enough mana for stun");
         }
-
     }
 
     @Override

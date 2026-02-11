@@ -16,8 +16,6 @@ public class Mage extends Entity {
 
     @Override
     public void playTurn(BattleContext context) {
-        this.processEffects(this.getActiveEffects());
-
         context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
         Entity target = context.getCurrentTarget();
 

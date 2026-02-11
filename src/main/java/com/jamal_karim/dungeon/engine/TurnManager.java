@@ -20,16 +20,20 @@ public class TurnManager {
     }
 
     public void playTurns(){
+        CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
 
         while(!context.checkForWinner()){
-            CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
             Entity e = orderOfCharacters.poll();
 
             if(e != null && e.isAlive()){
                 CombatLogger.logStartOfTurn(e);
-                if(e.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Stun Effect"))){
+
+                boolean isStunned = e.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Stun Effect"));
+
+                if(isStunned){
                     e.processEffects(e.getActiveEffects());
                 } else{
+                    e.processEffects(e.getActiveEffects());
                     e.playTurn(context);
                 }
 
@@ -38,6 +42,10 @@ public class TurnManager {
                 if(e.isAlive()){
                     orderOfCharacters.add(e);
                 }
+                if (context.checkForWinner()) {
+                    break;
+                }
+                CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
             }
         }
     }

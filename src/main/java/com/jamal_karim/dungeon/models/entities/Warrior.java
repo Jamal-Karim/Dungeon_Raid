@@ -15,8 +15,6 @@ public class Warrior extends Entity {
     @Override
     public void playTurn(BattleContext context) {
         int damageGiven;
-        this.processEffects(this.getActiveEffects());
-
         context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
         Entity target = context.getCurrentTarget();
 

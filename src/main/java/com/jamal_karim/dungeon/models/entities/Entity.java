@@ -73,6 +73,7 @@ abstract public class Entity {
         for (Effect e : activeEffects) {
             e.applyTick(this);
         }
+        activeEffects.removeIf(e -> e.getDuration() <= 0);
     }
 
     public int getMana() {
