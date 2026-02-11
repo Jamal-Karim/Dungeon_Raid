@@ -57,6 +57,7 @@ public class Tank extends Entity {
     protected void attack(Entity enemy, int amount) {
         enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
+        CombatLogger.logDamage(enemy, this.getDamage());
     }
 
     @Override

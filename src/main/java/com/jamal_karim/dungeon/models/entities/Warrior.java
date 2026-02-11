@@ -14,43 +14,55 @@ public class Warrior extends Entity {
 
     @Override
     public void playTurn(BattleContext context) {
-        int damageGiven;
         context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
         Entity target = context.getCurrentTarget();
 
-        if(this.getHp() < 10){this.superAttack = true;}
-
         if(this.getHp() < 10 && this.superAttack){
-            damageGiven = executeSuperAttack(target);
+            executeSuperAttack(target);
         } else if (target instanceof Tank) {
             this.attack(target, 35);
-            damageGiven = 35;
         } else{
             this.attack(target, 25);
-            damageGiven = 25;
         }
-        CombatLogger.logDamage(target, damageGiven);
     }
 
-    public int executeSuperAttack(Entity enemy){
-        int damageGiven = 0;
-//        TODO: need logic for when health is below 10 somewhere else
+    private boolean canExecuteSuperAttack(){
+        return superAttack && this.getHp() < 10;
+    }
 
-        if(enemy instanceof Tank){
-            enemy.takeDamage(50);
-            damageGiven = 50;
-        } else{
-            enemy.takeDamage(this.getDamage() + 15);
-            damageGiven = this.getDamage() + 15;
+    public void executeSuperAttack(Entity enemy){
+
+        if (!canExecuteSuperAttack()) {
+            System.out.println("Condition not met for Super Attack!");
+            return;
         }
-        this.superAttack = false;
-        CombatLogger.logAttack(this, enemy, "launches a super attack in desperation");
-        return damageGiven;
+
+            int damageGiven;
+
+            if(enemy instanceof Tank){
+                damageGiven = 50;
+            } else{
+                damageGiven = this.getDamage() + 15;
+            }
+
+            enemy.takeDamage(damageGiven);
+            this.superAttack = false;
+            CombatLogger.logAttack(this, enemy, "launches a super attack in desperation");
+            CombatLogger.logDamage(enemy, damageGiven);
     }
 
     @Override
     protected void attack(Entity enemy, int amount) {
         enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
+        CombatLogger.logDamage(enemy, amount);
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        if(this.getHp() < 10 && this.getHp() > 0){
+            this.superAttack = true;
+        }
     }
 }
