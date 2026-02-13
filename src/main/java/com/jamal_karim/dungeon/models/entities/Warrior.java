@@ -12,18 +12,8 @@ public class Warrior extends Entity {
         this.superAttack = false;
     }
 
-    @Override
-    public void playTurn(BattleContext context) {
-        context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
-        Entity target = context.getCurrentTarget();
-
-        if(this.getHp() < 10 && this.superAttack){
-            executeSuperAttack(target);
-        } else if (target instanceof Tank) {
-            this.attack(target, 35);
-        } else{
-            this.attack(target, 25);
-        }
+    public boolean isSuperAttack() {
+        return superAttack;
     }
 
     private boolean canExecuteSuperAttack(){
@@ -52,7 +42,7 @@ public class Warrior extends Entity {
     }
 
     @Override
-    protected void attack(Entity enemy, int amount) {
+    public void attack(Entity enemy, int amount) {
         enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
         CombatLogger.logDamage(enemy, amount);

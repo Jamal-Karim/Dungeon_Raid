@@ -1,5 +1,6 @@
 package com.jamal_karim.dungeon.models.entities;
 
+import com.jamal_karim.dungeon.controllers.ActionController;
 import com.jamal_karim.dungeon.engine.BattleContext;
 import com.jamal_karim.dungeon.models.abilities.Ability;
 import com.jamal_karim.dungeon.models.effects.Effect;
@@ -16,6 +17,7 @@ abstract public class Entity {
     private String team;
     private List<Effect> activeEffects;
     private int speed;
+    private ActionController controller;
 
     public Entity(String name, int hp, int mana, int damage, String team, int speed) {
         this.name = name;
@@ -29,9 +31,17 @@ abstract public class Entity {
         this.activeEffects = new ArrayList<>();
     }
 
-    abstract public void playTurn(BattleContext context);
+    public void setController(ActionController controller) {
+        this.controller = controller;
+    }
 
-    abstract protected void attack(Entity enemy, int amount);
+    public void takeTurn(BattleContext context) {
+        if (controller != null) {
+            controller.decideAction(this, context);
+        }
+    }
+
+    abstract public void attack(Entity enemy, int amount);
 
     public int getMaxHp(){
         return this.maxHp;

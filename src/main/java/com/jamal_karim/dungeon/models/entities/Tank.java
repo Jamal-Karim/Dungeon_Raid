@@ -14,21 +14,12 @@ public class Tank extends Entity {
         super(name, 250, 100, 20, team, 10);
     }
 
-    @Override
-    public void playTurn(BattleContext context) {
+    public int getManaForShield() {
+        return manaForShield;
+    }
 
-        context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
-        Entity target = context.getCurrentTarget();
-
-        if(this.getHp() < this.getMaxHp() / 2 && this.getMana() >= manaForShield){
-            castShield();
-        } else if (target instanceof Mage && this.getMana() >= manaForStun) {
-            castStun(target);
-        } else if (this.getMana() >= (manaForStun + manaForShield)) {
-            castStun(target);
-        } else {
-            attack(target, this.getDamage());
-        }
+    public int getManaForStun() {
+        return manaForStun;
     }
 
     public void castShield(){
@@ -54,7 +45,7 @@ public class Tank extends Entity {
     }
 
     @Override
-    protected void attack(Entity enemy, int amount) {
+    public void attack(Entity enemy, int amount) {
         enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
         CombatLogger.logDamage(enemy, this.getDamage());

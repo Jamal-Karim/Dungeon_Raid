@@ -34,7 +34,7 @@ public class TurnManager {
                     e.processEffects(e.getActiveEffects());
                 } else{
                     e.processEffects(e.getActiveEffects());
-                    e.playTurn(context);
+                    e.takeTurn(context);
                 }
 
                 cleanup();

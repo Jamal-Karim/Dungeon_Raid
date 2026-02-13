@@ -14,20 +14,6 @@ public class Mage extends Entity {
         super(name, 120,200, 10, team, 10);
     }
 
-    @Override
-    public void playTurn(BattleContext context) {
-        context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(this)));
-        Entity target = context.getCurrentTarget();
-
-        if(target.getHp() > target.getMaxHp() / 2 && this.getMana() > 20){
-            castPoison(target, context);
-        } else if(this.getMana() > 10){
-            castFireball(context);
-        } else{
-            this.attack(target, this.getDamage());
-        }
-    }
-
     public void castPoison(Entity target, BattleContext context){
         if(this.getMana() > 20){
             poison.execute(this,context);
@@ -45,7 +31,7 @@ public class Mage extends Entity {
     }
 
     @Override
-    protected void attack(Entity enemy, int amount) {
+    public void attack(Entity enemy, int amount) {
         enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
         CombatLogger.logDamage(enemy, this.getDamage());
