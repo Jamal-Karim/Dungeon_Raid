@@ -20,7 +20,8 @@ public class Mage extends Entity {
             this.attack(target, this.getDamage());
         } else{
             System.out.println("Not enough mana for poison");
-        }    }
+        }
+    }
 
     public void castFireball(BattleContext context){
         if(this.getMana() > 10){

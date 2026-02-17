@@ -1,6 +1,5 @@
 package com.jamal_karim.dungeon.models.entities;
 
-import com.jamal_karim.dungeon.engine.BattleContext;
 import com.jamal_karim.dungeon.engine.CombatLogger;
 
 public class Warrior extends Entity {
@@ -12,7 +11,7 @@ public class Warrior extends Entity {
         this.superAttack = false;
     }
 
-    public boolean isSuperAttack() {
+    public boolean hasSuperAttack() {
         return superAttack;
     }
 
