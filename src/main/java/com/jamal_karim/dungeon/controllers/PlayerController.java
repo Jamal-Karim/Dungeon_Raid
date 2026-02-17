@@ -24,9 +24,6 @@ public class PlayerController implements ActionController{
         } else if(user instanceof Tank){
             handleTankTurn((Tank) user, context);
         }
-
-        System.out.println("\nPress Enter to continue...");
-        scanner.nextLine();
     }
 
     private void displayCurrentStats(Entity user){
@@ -210,7 +207,7 @@ public class PlayerController implements ActionController{
                     mage.castPoison(target, context);
                     break;
                 case 3:
-                    mage.castFireball(context);
+                    mage.castFireball(target, context);
                     break;
             }
             validMove = true;

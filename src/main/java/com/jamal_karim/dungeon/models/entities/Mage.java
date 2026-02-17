@@ -11,21 +11,21 @@ public class Mage extends Entity {
     private Ability fireball = new Fireball();
 
     public Mage(String name, String team) {
-        super(name, 120,200, 10, team, 10);
+        super(name, 12,200, 10, team, 10);
     }
 
     public void castPoison(Entity target, BattleContext context){
         if(this.getMana() > 20){
-            poison.execute(this,context);
+            poison.execute(this, target, context);
             this.attack(target, this.getDamage());
         } else{
             System.out.println("Not enough mana for poison");
         }
     }
 
-    public void castFireball(BattleContext context){
+    public void castFireball(Entity target, BattleContext context){
         if(this.getMana() > 10){
-            fireball.execute(this,context);
+            fireball.execute(this, target, context);
         } else{
             System.out.println("Not enough mana for fireball");
         }

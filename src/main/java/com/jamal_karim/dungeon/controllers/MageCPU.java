@@ -15,7 +15,7 @@ public class MageCPU implements ActionController{
         if(target.getHp() > target.getMaxHp() / 2 && mage.getMana() > 20){
             mage.castPoison(target, context);
         } else if(mage.getMana() > 10){
-            mage.castFireball(context);
+            mage.castFireball(target, context);
         } else{
             mage.attack(target, mage.getDamage());
         }

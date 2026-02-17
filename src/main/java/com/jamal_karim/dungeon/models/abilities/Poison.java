@@ -9,12 +9,11 @@ public class Poison implements Ability{
     private int manaTaken = 20;
 
     @Override
-    public void execute(Entity caster, BattleContext context) {
+    public void execute(Entity caster, Entity target, BattleContext context) {
 
         if(caster.canAffordAbility(caster, this)){
             PoisonEffect poisonEffect = new PoisonEffect();
             caster.reduceMana(manaTaken);
-            Entity target = context.getCurrentTarget();
             target.addEffect(poisonEffect);
             CombatLogger.logAction(caster, "launches a Poison Spell on " + target.getName());
         } else {

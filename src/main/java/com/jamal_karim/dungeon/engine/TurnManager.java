@@ -8,6 +8,7 @@ public class TurnManager {
 
     private Queue<Entity> orderOfCharacters;
     private BattleContext context;
+    private Scanner scanner = new Scanner(System.in);
 
     public TurnManager(BattleContext context) {
         this.context = context;
@@ -20,8 +21,6 @@ public class TurnManager {
     }
 
     public void playTurns(){
-        CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
-
         while(!context.checkForWinner()){
             Entity e = orderOfCharacters.poll();
 
@@ -45,6 +44,10 @@ public class TurnManager {
                 if (context.checkForWinner()) {
                     break;
                 }
+
+                System.out.println("\nPress Enter to continue...");
+                scanner.nextLine();
+
                 CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
             }
         }
