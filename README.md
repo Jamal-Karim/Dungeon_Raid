@@ -48,7 +48,12 @@ This project implements the **Strategy Design Pattern** to decouple character lo
 ## 🚀 How to Run
 1. Ensure you have **JDK 17** and **Maven** installed.
 2. Clone the repository.
-3. Run `mvn clean compile` to build the project.
-4. Run the application via your IDE or `mvn exec:java -Dexec.mainClass="com.jamal_karim.dungeon.Main"`.
+3. Build the project:
+```bash
+   mvn clean compile
+```
+4. Run the application via your IDE or 
+```bash
+mvn exec:java
+```
 
----
