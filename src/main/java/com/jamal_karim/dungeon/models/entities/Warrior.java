@@ -34,24 +34,25 @@ public class Warrior extends Entity {
                 damageGiven = this.getDamage() + 15;
             }
 
-            enemy.takeDamage(damageGiven);
+            int actualDamage = enemy.takeDamage(damageGiven);
             this.superAttack = false;
             CombatLogger.logAttack(this, enemy, "launches a super attack in desperation");
-            CombatLogger.logDamage(enemy, damageGiven);
+            CombatLogger.logDamage(enemy, actualDamage);
     }
 
     @Override
     public void attack(Entity enemy, int amount) {
-        enemy.takeDamage(amount);
+        int actualDamage = enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
-        CombatLogger.logDamage(enemy, amount);
+        CombatLogger.logDamage(enemy, actualDamage);
     }
 
     @Override
-    public void takeDamage(int damage) {
-        super.takeDamage(damage);
+    public int takeDamage(int damage) {
+        int actualDamage = super.takeDamage(damage);
         if(this.getHp() < 10 && this.getHp() > 0){
             this.superAttack = true;
         }
+        return actualDamage;
     }
 }

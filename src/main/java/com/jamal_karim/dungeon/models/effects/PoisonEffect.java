@@ -14,8 +14,8 @@ public class PoisonEffect implements Effect{
 
     @Override
     public void applyTick(Entity target) {
-        target.takeDamage(this.damagePerTurn);
-        CombatLogger.logEffect(target, "Poison", this.damagePerTurn);
+        int actualDamage = target.takeDamage(this.damagePerTurn);
+        CombatLogger.logEffect(target, "Poison", actualDamage);
         this.duration--;
     }
 

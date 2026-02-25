@@ -63,8 +63,10 @@ abstract public class Entity {
         return damage;
     }
 
-    public void takeDamage(int damage) {
-        this.hp -= damage;
+    public int takeDamage(int damage) {
+        int damageTaken = Math.min(this.hp, damage);
+        this.hp -= damageTaken;
+        return damageTaken;
     }
 
     public void addEffect(Effect effect){

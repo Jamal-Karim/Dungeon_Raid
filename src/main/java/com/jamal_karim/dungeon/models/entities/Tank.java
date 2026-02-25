@@ -46,17 +46,21 @@ public class Tank extends Entity {
 
     @Override
     public void attack(Entity enemy, int amount) {
-        enemy.takeDamage(amount);
+        int actualDamage = enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
-        CombatLogger.logDamage(enemy, this.getDamage());
+        CombatLogger.logDamage(enemy, actualDamage);
     }
 
     @Override
-    public void takeDamage(int damage) {
-        if(this.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Shield Effect"))){
-            this.setHp((int) (this.getHp() - damage * 0.5));
-        } else{
-            this.setHp(this.getHp() - damage);
+    public int takeDamage(int damage) {
+        float damageMultiplier = 1.0f;
+        if (this.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Shield Effect"))) {
+            damageMultiplier = 0.5f;
         }
+
+        int damageToTake = (int) (damage * damageMultiplier);
+        int actualDamage = Math.min(this.getHp(), damageToTake);
+        this.setHp(this.getHp() - actualDamage);
+        return actualDamage;
     }
 }

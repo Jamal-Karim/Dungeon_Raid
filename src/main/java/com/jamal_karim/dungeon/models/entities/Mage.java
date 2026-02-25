@@ -33,8 +33,8 @@ public class Mage extends Entity {
 
     @Override
     public void attack(Entity enemy, int amount) {
-        enemy.takeDamage(amount);
+        int actualDamage = enemy.takeDamage(amount);
         CombatLogger.logAttack(this, enemy, "launches an attack");
-        CombatLogger.logDamage(enemy, this.getDamage());
+        CombatLogger.logDamage(enemy, actualDamage);
     }
 }
