@@ -113,4 +113,12 @@ abstract public class Entity {
     public void setHp(int hp) {
         this.hp = hp;
     }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 }

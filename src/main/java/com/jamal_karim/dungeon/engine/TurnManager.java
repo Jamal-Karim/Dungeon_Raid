@@ -1,5 +1,6 @@
 package com.jamal_karim.dungeon.engine;
 
+import com.jamal_karim.dungeon.engine.ui.GameUI;
 import com.jamal_karim.dungeon.models.entities.Entity;
 
 import java.util.*;
@@ -7,11 +8,12 @@ import java.util.*;
 public class TurnManager {
 
     private Queue<Entity> orderOfCharacters;
-    private BattleContext context;
-    private Scanner scanner = new Scanner(System.in);
+    private final BattleContext context;
+    private final GameUI ui;
 
-    public TurnManager(BattleContext context) {
+    public TurnManager(BattleContext context, GameUI ui) {
         this.context = context;
+        this.ui = ui;
     }
 
     public void setOrderOfCharacters(List<Entity> entities){
@@ -21,11 +23,11 @@ public class TurnManager {
     }
 
     public void playTurns(){
-        while(!context.checkForWinner()){
+        while(!context.checkForWinner(ui)){
             Entity e = orderOfCharacters.poll();
 
             if(e != null && e.isAlive()){
-                CombatLogger.logStartOfTurn(e);
+                ui.logStartOfTurn(e);
 
                 boolean isStunned = e.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Stun Effect"));
 
@@ -41,14 +43,13 @@ public class TurnManager {
                 if(e.isAlive()){
                     orderOfCharacters.add(e);
                 }
-                if (context.checkForWinner()) {
+                if (context.checkForWinner(ui)) {
                     break;
                 }
 
-                System.out.println("\nPress Enter to continue...");
-                scanner.nextLine();
+                ui.waitForPlayerInput();
 
-                CombatLogger.logBattleStatus(context.getAllEntities(), context.getGraveyard());
+                ui.logBattleStatus(context.getAllEntities(), context.getGraveyard());
             }
         }
     }
@@ -59,4 +60,7 @@ public class TurnManager {
         context.getAllEntities().removeIf(entity -> !entity.isAlive());
     }
 
+    Queue<Entity> getOrderOfCharacters() {
+        return orderOfCharacters;
+    }
 }

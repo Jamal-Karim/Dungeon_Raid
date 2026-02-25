@@ -1,6 +1,5 @@
 package com.jamal_karim.dungeon.models.entities;
 
-import com.jamal_karim.dungeon.engine.BattleContext;
 import com.jamal_karim.dungeon.engine.CombatLogger;
 import com.jamal_karim.dungeon.models.effects.ShieldEffect;
 import com.jamal_karim.dungeon.models.effects.StunEffect;
@@ -8,10 +7,11 @@ import com.jamal_karim.dungeon.models.effects.StunEffect;
 public class Tank extends Entity {
 
     private final int manaForShield = 10;
-    private final int manaForStun = (int) (this.getMaxMana() * 0.75);
+    private final int manaForStun;
 
     public Tank(String name, String team) {
         super(name, 250, 100, 20, team, 10);
+        this.manaForStun = (int) (this.getMaxMana() * 0.75);
     }
 
     public int getManaForShield() {

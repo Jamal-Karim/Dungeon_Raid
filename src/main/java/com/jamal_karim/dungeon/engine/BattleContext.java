@@ -1,6 +1,8 @@
 package com.jamal_karim.dungeon.engine;
 
 import java.util.*;
+
+import com.jamal_karim.dungeon.engine.ui.GameUI;
 import com.jamal_karim.dungeon.models.entities.Entity;
 
 public class BattleContext {
@@ -49,7 +51,7 @@ public class BattleContext {
         return allEntities.stream().filter(entity -> !entity.getTeam().equals(character.getTeam())).toList();
     }
 
-    public boolean checkForWinner() {
+    public boolean checkForWinner(GameUI ui) {
 
         Set<String> activeTeams = new HashSet<>();
 
@@ -58,8 +60,8 @@ public class BattleContext {
         }
 
         if (activeTeams.size() == 1) {
-            CombatLogger.logBattleStatus(allEntities, graveyard);
-            System.out.println("The winner is: " + activeTeams.iterator().next());
+            ui.logBattleStatus(allEntities, graveyard);
+            ui.logWinner(activeTeams.iterator().next());
             return true;
         }
         return activeTeams.isEmpty();

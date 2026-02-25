@@ -1,6 +1,8 @@
 package com.jamal_karim.dungeon.engine;
 
 import com.jamal_karim.dungeon.controllers.*;
+import com.jamal_karim.dungeon.engine.ui.ConsoleUI;
+import com.jamal_karim.dungeon.engine.ui.GameUI;
 import com.jamal_karim.dungeon.models.entities.Entity;
 import com.jamal_karim.dungeon.models.entities.Mage;
 import com.jamal_karim.dungeon.models.entities.Warrior;
@@ -13,7 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Game {
 
     private BattleContext context = new BattleContext();
-    private TurnManager turns = new TurnManager(context);
+    private final GameUI ui = new ConsoleUI();
+    private TurnManager turns = new TurnManager(context, ui);
     private final ActionController WarriorCPU = new WarriorCPU();
     private final ActionController MageCPU = new MageCPU();
     private final ActionController TankCPU = new TankCPU();
@@ -37,7 +40,7 @@ public class Game {
     private void resetGame(){
         entitiesReadyToPlay.clear();
         context = new BattleContext();
-        turns = new TurnManager(context);
+        turns = new TurnManager(context, ui);
     }
 
     private void setUpGame(){
