@@ -11,6 +11,11 @@ public class Warrior extends Entity {
         this.superAttack = false;
     }
 
+    public Warrior(String name, String team, int initialHp) {
+        super(name, initialHp, 50, 25, team, 50);
+        this.superAttack = false;
+    }
+
     public boolean hasSuperAttack() {
         return superAttack;
     }
