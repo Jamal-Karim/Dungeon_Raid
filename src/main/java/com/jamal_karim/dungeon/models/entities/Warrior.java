@@ -4,24 +4,16 @@ import com.jamal_karim.dungeon.engine.CombatLogger;
 
 public class Warrior extends Entity {
 
-    private boolean superAttack;
-
     public Warrior(String name, String team) {
         super(name, 200, 50, 25, team, 50);
-        this.superAttack = false;
     }
 
     public Warrior(String name, String team, int initialHp) {
         super(name, initialHp, 50, 25, team, 50);
-        this.superAttack = false;
     }
 
-    public boolean hasSuperAttack() {
-        return superAttack;
-    }
-
-    private boolean canExecuteSuperAttack(){
-        return superAttack && this.getHp() < 10;
+    public boolean canExecuteSuperAttack(){
+        return this.getHp() > 0 && this.getHp() < 10;
     }
 
     public void executeSuperAttack(Entity enemy){
@@ -40,7 +32,6 @@ public class Warrior extends Entity {
             }
 
             int actualDamage = enemy.takeDamage(damageGiven);
-            this.superAttack = false;
             CombatLogger.logAttack(this, enemy, "launches a super attack in desperation");
             CombatLogger.logDamage(enemy, actualDamage);
     }
@@ -52,12 +43,4 @@ public class Warrior extends Entity {
         CombatLogger.logDamage(enemy, actualDamage);
     }
 
-    @Override
-    public int takeDamage(int damage) {
-        int actualDamage = super.takeDamage(damage);
-        if(this.getHp() < 10 && this.getHp() > 0){
-            this.superAttack = true;
-        }
-        return actualDamage;
-    }
 }

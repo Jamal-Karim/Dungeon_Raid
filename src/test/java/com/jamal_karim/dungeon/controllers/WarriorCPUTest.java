@@ -23,21 +23,19 @@ public class WarriorCPUTest {
     }
 
     @Test
-    void warriorUsesSuperAttackWhenConditionsMet() {
-        // Condition: HP < 10 and hasSuperAttack flag is true
+    void warriorCPUUsesSuperAttackWhenHealthIsLow() {
+        // Condition: HP < 10
         Mage enemy = new Mage("TestEnemy", "TeamB");
         context.addToTeam(enemy);
         
         warrior.setHp(9);
-        warrior.takeDamage(0); // This is necessary to trigger the flag
-        assertTrue(warrior.hasSuperAttack(), "Pre-condition: Warrior must have super attack ready.");
 
         int initialEnemyHp = enemy.getHp();
+        // The CPU should decide to use a super attack
         warriorCPU.decideAction(warrior, context);
         
         int expectedDamage = warrior.getDamage() + 15;
-        assertEquals(initialEnemyHp - expectedDamage, enemy.getHp(), "Warrior should use super attack.");
-        assertFalse(warrior.hasSuperAttack(), "Warrior should lose super attack status after using it.");
+        assertEquals(initialEnemyHp - expectedDamage, enemy.getHp(), "Warrior CPU should use super attack when health is low.");
     }
 
     @Test

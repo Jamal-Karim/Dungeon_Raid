@@ -78,7 +78,7 @@ public class PlayerController implements ActionController{
             System.out.println("[1] Standard Attack");
             int maxChoice = 1;
 
-            if (warrior.hasSuperAttack()) {
+            if (warrior.canExecuteSuperAttack()) {
                 System.out.println("[2] Super Attack");
                 maxChoice = 2;
             }

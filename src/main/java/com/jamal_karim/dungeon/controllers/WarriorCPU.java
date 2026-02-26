@@ -14,7 +14,7 @@ public class WarriorCPU implements ActionController{
         context.setCurrentTarget(context.findLowestHealthEnemy(context.getEnemiesOf(warrior)));
         Entity target = context.getCurrentTarget();
 
-        if(warrior.getHp() < 10 && warrior.hasSuperAttack()){
+        if(warrior.canExecuteSuperAttack()){
             warrior.executeSuperAttack(target);
         } else if (target instanceof Tank) {
             warrior.attack(target, 35);
