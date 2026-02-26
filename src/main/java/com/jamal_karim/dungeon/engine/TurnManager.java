@@ -10,54 +10,70 @@ public class TurnManager {
     private Queue<Entity> orderOfCharacters;
     private final BattleContext context;
     private final GameUI ui;
+    private Entity lastEntityToAct;
 
     public TurnManager(BattleContext context, GameUI ui) {
         this.context = context;
         this.ui = ui;
     }
 
-    public void setOrderOfCharacters(List<Entity> entities){
+    public void setOrderOfCharacters(List<Entity> entities) {
         List<Entity> sortedCopy = new ArrayList<>(entities);
         sortedCopy.sort(Comparator.comparing(Entity::getSpeed).reversed());
         this.orderOfCharacters = new LinkedList<>(sortedCopy);
     }
 
-    public void playTurns(){
-        while(!context.checkForWinner(ui)){
-            Entity e = orderOfCharacters.poll();
+    public void playNextTurn() {
+        if (orderOfCharacters == null || orderOfCharacters.isEmpty()) {
+            lastEntityToAct = null; // No characters to play, reset last actor
+            return;
+        }
 
-            if(e != null && e.isAlive()){
-                ui.logStartOfTurn(e);
+        Entity e = orderOfCharacters.poll();
 
-                boolean isStunned = e.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Stun Effect"));
+        if (e != null && e.isAlive()) {
+            lastEntityToAct = e;
 
-                if(isStunned){
-                    e.processEffects(e.getActiveEffects());
-                } else{
-                    e.processEffects(e.getActiveEffects());
-                    e.takeTurn(context);
-                }
+            ui.logStartOfTurn(e);
 
-                cleanup();
+            boolean isStunned = e.getActiveEffects().stream().anyMatch(effect -> effect.getName().equals("Stun Effect"));
 
-                if(e.isAlive()){
-                    orderOfCharacters.add(e);
-                }
-                if (context.checkForWinner(ui)) {
-                    break;
-                }
-
-                ui.waitForPlayerInput();
-
-                ui.logBattleStatus(context.getAllEntities(), context.getGraveyard());
+            if (isStunned) {
+                e.processEffects(e.getActiveEffects());
+            } else {
+                e.processEffects(e.getActiveEffects());
+                e.takeTurn(context);
             }
+
+            cleanup();
+
+            if (e.isAlive()) {
+                orderOfCharacters.add(e);
+            }
+        } else {
+            lastEntityToAct = null;
         }
     }
 
-    public void cleanup(){
+    public void playTurns() {
+        while (!context.checkForWinner(ui)) {
+            playNextTurn();
+            if (context.checkForWinner(ui)) {
+                break;
+            }
 
+            ui.waitForPlayerInput();
+            ui.logBattleStatus(context.getAllEntities(), context.getGraveyard());
+        }
+    }
+
+    public void cleanup() {
         context.getAllEntities().stream().filter(entity -> !entity.isAlive()).forEach(context.getGraveyard()::add);
         context.getAllEntities().removeIf(entity -> !entity.isAlive());
+    }
+
+    public Entity getLastEntityToAct() {
+        return lastEntityToAct;
     }
 
     Queue<Entity> getOrderOfCharacters() {

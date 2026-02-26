@@ -11,12 +11,12 @@ public class Tank extends Entity {
 
     public Tank(String name, String team) {
         super(name, 250, 100, 20, team, 10);
-        this.manaForStun = (int) (this.getMaxMana() * 0.75);
+        this.manaForStun = (int) (100 * 0.75);
     }
 
     public Tank(String name, String team, int initialHp, int initialMana) {
         super(name, initialHp, initialMana, 20, team, 10);
-        this.manaForStun = (int) (this.getMaxMana() * 0.75);
+        this.manaForStun = (int) (100 * 0.75);
     }
 
     public int getManaForShield() {
@@ -27,24 +27,24 @@ public class Tank extends Entity {
         return manaForStun;
     }
 
-    public void castShield(){
-        if(this.getMana() >= manaForShield){
+    public void castShield() {
+        if (this.getMana() >= manaForShield) {
             ShieldEffect shield = new ShieldEffect();
             this.addEffect(shield);
             this.reduceMana(manaForShield);
             CombatLogger.logAction(this, "raises a heavy shield!");
-        } else{
+        } else {
             throw new IllegalStateException("Cannot execute shield cast: Conditions not met (mana must be > 10).");
         }
     }
 
-    public void castStun(Entity enemy){
-        if(this.getMana() >= manaForStun){
+    public void castStun(Entity enemy) {
+        if (this.getMana() >= manaForStun) {
             StunEffect stun = new StunEffect();
             enemy.addEffect(stun);
             this.reduceMana(manaForStun);
             CombatLogger.logAttack(this, enemy, "launches stun");
-        } else{
+        } else {
             throw new IllegalStateException(String.format("Cannot execute stun cast: Conditions not met (mana must be > %d).", manaForStun));
         }
     }
