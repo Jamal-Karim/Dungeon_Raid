@@ -49,7 +49,7 @@ Here's a breakdown of the key Java files and their responsibilities:
 
 -   **`src/main/java/com/jamal_karim.dungeon/engine/`**
     -   **`Game.java`**: The central orchestrator. Handles game setup (team creation, player/CPU selection), manages the main game loop, and coordinates turns by interacting with `TurnManager` and `BattleContext`.
-    -   **`TurnManager.java`**: Responsible for determining the turn order of all active entities, processing each entity's turn, and managing the overall round progression.
+    -   **`TurnManager.java`**: Responsible for determining the turn order of all active entities, processing each entity's turn through `playNextTurn()`, and managing the overall round progression. It also tracks the last entity to act for testing purposes.
     -   **`BattleContext.java`**: Acts as the shared knowledge base for the current battle. It holds references to all active entities, teams, the graveyard of defeated entities, and provides utility methods for finding targets (e.g., `findLowestHealthEnemy`).
     -   **`CombatLogger.java`**: A utility class dedicated to handling all console output related to combat events. It abstracts away `System.out.println` calls from the core game logic, making the code cleaner and easier to manage.
 
@@ -76,6 +76,10 @@ Here's a breakdown of the key Java files and their responsibilities:
         -   **`ShieldEffect.java`**: Implements `Effect` to represent a temporary damage reduction.
         -   **`StunEffect.java`**: Implements `Effect` to represent a turn-skipping crowd control effect.
 
+-   **`src/test/java/com/jamal_karim.dungeon/utils/`**
+    -   **`TestContext.java`**: Manages shared state and resources across Cucumber step definitions, ensuring scenarios have access to the battle context and turn manager instances.
+    -   **`TestVariables.java`**: Provides a key-value store to save and retrieve entities and other dynamic data (like error messages) between Cucumber steps.
+
 ## How to Run 🚀
 
 1.  Ensure you have **Java 17 (JDK)** and **Apache Maven** installed and configured on your system.
@@ -96,5 +100,20 @@ Here's a breakdown of the key Java files and their responsibilities:
 
 The project is configured with **JUnit 5** for unit testing and **Cucumber** for behavior-driven development (BDD). This two-pronged approach ensures both granular component validation and high-level scenario verification:
 
--   **Unit Tests (JUnit):** Focus on isolating and testing individual methods and classes, such as damage calculations, mana consumption, ability cooldowns, and the precise application of status effects.
--   **Behavioral Tests (Cucumber):** Utilize Gherkin syntax to define and test complex, end-to-end combat scenarios from a user's perspective, ensuring the game logic behaves as expected across various interactions.
+-   **Unit Tests (JUnit):** Focus on isolating and testing individual methods and classes (e.g., `MageTest.java`, `TankTest.java`, `WarriorTest.java`). These tests cover damage calculations, mana consumption, ability effects, and the precise application of status effects in isolation.
+-   **Behavioral Tests (Cucumber):** Utilize Gherkin syntax in `.feature` files to define and test complex, end-to-end combat scenarios from a user's perspective, ensuring the game logic behaves as expected across various interactions.
+    *   **Feature Files:**
+        *   `Mage.feature`, `Tank.feature`, `Warrior.feature`: Test the specific abilities and negative conditions for each character class at a component level.
+        *   `Game.feature`: Tests the overarching game logic, including correct turn order based on entity speed, inter-entity ability interactions (e.g., Mage casting poison on a Warrior), and the handling of various game states (e.g., mana insufficiency errors).
+    *   **Test Context Management:** The `TestContext` and `TestVariables` utility classes facilitate the management of shared battle state and dynamic data (like error messages) across Cucumber steps, enabling robust scenario execution and verification.
+
+## Future Enhancements 🔮
+
+While the core combat system is functional, several areas could be explored for future development:
+
+-   **Comprehensive Win/Loss Conditions:** Implement and test scenarios covering various battle termination conditions and victory/defeat states.
+-   **Player Input System:** Expand the `PlayerController` to offer a richer, more dynamic player experience, including choosing targets and abilities.
+-   **More Status Effects:** Introduce a wider array of positive and negative status effects to add depth to combat.
+-   **Items and Inventory:** Develop a system for entities to acquire, use, and manage items.
+-   **Persistent Game State:** Implement saving and loading game progress.
+-   **Advanced AI:** Enhance CPU AI with more sophisticated decision-making algorithms and target prioritization.
