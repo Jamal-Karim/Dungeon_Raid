@@ -22,7 +22,13 @@ public class EntitySteps {
         attacker.attack(target, attacker.getDamage());
     }
 
-    @Then("^the entity (\\{\\w+\\}) should have ([1-9]{1}[0-9]{1,2}) HP$")
+    @When("^an entity (\\{\\w+\\}) mana is lowered to ([1-9]{1}[0-9]{0,2})$")
+    public void reduceEntityMana(String entityName, int reducedMana){
+        Entity entity = testContext.getTestVariables().get(entityName);
+        entity.setMana(reducedMana);
+    }
+
+    @Then("^the entity (\\{\\w+\\}) should have ([1-9]{1}[0-9]{0,2}) HP$")
     public void verifyHP(String entityName, int expectedHp){
         Entity entity = testContext.getTestVariables().get(entityName);
         Assertions.assertEquals(expectedHp, entity.getHp(), entityName + " did not have the expected hp of " + expectedHp + " after attack");

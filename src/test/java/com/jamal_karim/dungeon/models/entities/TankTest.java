@@ -59,12 +59,12 @@ public class TankTest {
     @Test
     void tankCannotCastShieldWithInsufficientMana() {
         tank.reduceMana(tank.getMana()); // Set mana to 0
-        int initialMana = tank.getMana();
         
-        tank.castShield();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            tank.castShield();
+        });
 
-        assertEquals(initialMana, tank.getMana(), "Tank's mana should not change.");
-        assertFalse(tank.getActiveEffects().stream().anyMatch(e -> e.getName().equals("Shield Effect")), "Tank should not gain Shield Effect.");
+        assertEquals("Cannot execute shield cast: Conditions not met (mana must be > 10).", exception.getMessage());
     }
 
     @Test
@@ -85,12 +85,11 @@ public class TankTest {
     @Test
     void tankCannotCastStunWithInsufficientMana() {
         tank.reduceMana(tank.getMana() - 1); // Make mana insufficient
-        int initialMana = tank.getMana();
-        int initialTargetEffects = target.getActiveEffects().size();
+        
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            tank.castStun(target);
+        });
 
-        tank.castStun(target);
-
-        assertEquals(initialMana, tank.getMana(), "Tank's mana should not change.");
-        assertEquals(initialTargetEffects, target.getActiveEffects().size(), "Target should not gain Stun Effect.");
+        assertEquals(String.format("Cannot execute stun cast: Conditions not met (mana must be > %d).", tank.getManaForStun()), exception.getMessage());
     }
 }

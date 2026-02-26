@@ -14,6 +14,11 @@ public class Tank extends Entity {
         this.manaForStun = (int) (this.getMaxMana() * 0.75);
     }
 
+    public Tank(String name, String team, int initialHp, int initialMana) {
+        super(name, initialHp, initialMana, 20, team, 10);
+        this.manaForStun = (int) (this.getMaxMana() * 0.75);
+    }
+
     public int getManaForShield() {
         return manaForShield;
     }
@@ -29,7 +34,7 @@ public class Tank extends Entity {
             this.reduceMana(manaForShield);
             CombatLogger.logAction(this, "raises a heavy shield!");
         } else{
-            System.out.println("Not enough mana for shield");
+            throw new IllegalStateException("Cannot execute shield cast: Conditions not met (mana must be > 10).");
         }
     }
 
@@ -40,7 +45,7 @@ public class Tank extends Entity {
             this.reduceMana(manaForStun);
             CombatLogger.logAttack(this, enemy, "launches stun");
         } else{
-            System.out.println("Not enough mana for stun");
+            throw new IllegalStateException(String.format("Cannot execute stun cast: Conditions not met (mana must be > %d).", manaForStun));
         }
     }
 
