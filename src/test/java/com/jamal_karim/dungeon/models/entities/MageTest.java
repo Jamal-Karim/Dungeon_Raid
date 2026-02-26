@@ -43,13 +43,12 @@ public class MageTest {
     void mageCannotCastFireballWithInsufficientMana() {
         // Set mana to 9, which is less than the required 10.
         mage.reduceMana(mage.getMana() - 9);
-        int initialMana = mage.getMana();
-        int initialTargetHp = target.getHp();
 
-        mage.castFireball(target, context);
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            mage.castFireball(target, context);
+        });
 
-        assertEquals(initialMana, mage.getMana(), "Mage's mana should not change.");
-        assertEquals(initialTargetHp, target.getHp(), "Target's HP should not change.");
+        assertEquals("Cannot execute fireball cast: Conditions not met (mana must be > 10).", exception.getMessage());
     }
 
     @Test
@@ -78,14 +77,11 @@ public class MageTest {
     void mageCannotCastPoisonWithInsufficientMana() {
         // Set mana to 19, which is less than the required 20.
         mage.reduceMana(mage.getMana() - 19);
-        int initialMana = mage.getMana();
-        int initialTargetHp = target.getHp();
-        int initialEffectCount = target.getActiveEffects().size();
 
-        mage.castPoison(target, context);
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            mage.castPoison(target, context);
+        });
 
-        assertEquals(initialMana, mage.getMana(), "Mage's mana should not change.");
-        assertEquals(initialTargetHp, target.getHp(), "Target's HP should not change.");
-        assertEquals(initialEffectCount, target.getActiveEffects().size(), "Target's effects should not change.");
+        assertEquals("Cannot execute poison cast: Conditions not met (mana must be > 20).", exception.getMessage());
     }
 }

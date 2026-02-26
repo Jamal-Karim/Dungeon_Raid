@@ -14,12 +14,16 @@ public class Mage extends Entity {
         super(name, 120,200, 10, team, 10);
     }
 
+    public Mage(String name, String team, int initialHp, int initialMana) {
+        super(name, initialHp, initialMana, 10, team, 50);
+    }
+
     public void castPoison(Entity target, BattleContext context){
         if(this.getMana() > 20){
             poison.execute(this, target, context);
             this.attack(target, this.getDamage());
         } else{
-            System.out.println("Not enough mana for poison");
+            throw new IllegalStateException("Cannot execute poison cast: Conditions not met (mana must be > 20).");
         }
     }
 
@@ -27,7 +31,7 @@ public class Mage extends Entity {
         if(this.getMana() > 10){
             fireball.execute(this, target, context);
         } else{
-            System.out.println("Not enough mana for fireball");
+            throw new IllegalStateException("Cannot execute fireball cast: Conditions not met (mana must be > 10).");
         }
     }
 

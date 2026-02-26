@@ -3,6 +3,7 @@ package com.jamal_karim.dungeon.utils;
 import java.util.*;
 
 public class TestVariables {
+    public static final String LAST_ERROR_MESSAGE_KEY = "last_error_message";
     private final Map<String, Object> map;
 
     public TestVariables() {
@@ -12,10 +13,14 @@ public class TestVariables {
     public void store(String key, Object value) {
         if(key != null){
             String extractedKey = extractKey(key);
-            if (this.map.containsKey(extractedKey)) {
-                throw new RuntimeException("TestVariables already contains key: " + extractedKey);
+            if(extractedKey.equals(LAST_ERROR_MESSAGE_KEY)){
+                this.map.put(extractedKey, value);
+            } else{
+                if (this.map.containsKey(extractedKey)) {
+                    throw new RuntimeException("TestVariables already contains key: " + extractedKey);
+                }
+                this.map.put(extractedKey, value);
             }
-            this.map.put(extractedKey, value);
         }
     }
 

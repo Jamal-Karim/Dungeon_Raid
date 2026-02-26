@@ -28,6 +28,14 @@ public class EntitySteps {
         Assertions.assertEquals(expectedHp, entity.getHp(), entityName + " did not have the expected hp of " + expectedHp + " after attack");
     }
 
+    @Then("^the entity (\\{\\w+\\}) should have ([0-9]{1}) active effects$")
+    public void verifyActiveEffects(String entityName, int numOfEffects){
+        Entity entity = testContext.getTestVariables().get(entityName);
+        int actualActiveEffects = entity.getActiveEffects().size();
+
+        Assertions.assertEquals(numOfEffects, actualActiveEffects,"Entity did not have the expected number of active effects");
+    }
+
     @Then("^the error message thrown is \"(.*)\"$")
     public void verifyErrorMessage(String errorMessage) {
         String actualMessage = testContext.getTestVariables().get("last_error_message");

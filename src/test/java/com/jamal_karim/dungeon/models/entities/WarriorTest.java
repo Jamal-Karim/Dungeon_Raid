@@ -63,13 +63,14 @@ public class WarriorTest {
     void warriorCannotExecuteSuperAttackWhenHpIsHigh() {
         Warrior attacker = new Warrior("Attacker", "TeamA");
         Warrior target = new Warrior("Target", "TeamB");
-        int initialTargetHp = target.getHp();
 
         // HP is high, so super attack condition is not met
         attacker.setHp(100);
 
-        attacker.executeSuperAttack(target);
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            attacker.executeSuperAttack(target);
+        });
 
-        assertEquals(initialTargetHp, target.getHp(), "Super attack should not execute and deal no damage when HP is high.");
+        assertEquals("Cannot execute Super Attack: Conditions not met (HP must be < 10).", exception.getMessage());
     }
 }
