@@ -2,6 +2,7 @@ package com.jamal_karim.dungeon.step_definitions;
 
 import com.jamal_karim.dungeon.models.entities.Entity;
 import com.jamal_karim.dungeon.utils.TestContext;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
@@ -25,5 +26,11 @@ public class EntitySteps {
     public void verifyHP(String entityName, int expectedHp){
         Entity entity = testContext.getTestVariables().get(entityName);
         Assertions.assertEquals(expectedHp, entity.getHp(), entityName + " did not have the expected hp of " + expectedHp + " after attack");
+    }
+
+    @Then("^the error message thrown is \"(.*)\"$")
+    public void verifyErrorMessage(String errorMessage) {
+        String actualMessage = testContext.getTestVariables().get("last_error_message");
+        Assertions.assertEquals(errorMessage, actualMessage);
     }
 }

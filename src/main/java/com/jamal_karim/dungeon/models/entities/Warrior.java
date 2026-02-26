@@ -19,8 +19,7 @@ public class Warrior extends Entity {
     public void executeSuperAttack(Entity enemy){
 
         if (!canExecuteSuperAttack()) {
-            System.out.println("Condition not met for Super Attack!");
-            return;
+            throw new IllegalStateException("Cannot execute Super Attack: Conditions not met (HP must be < 10).");
         }
 
             int damageGiven;

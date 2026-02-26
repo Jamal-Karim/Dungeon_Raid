@@ -10,7 +10,6 @@ public class WarriorSteps {
 
     private final TestContext testContext;
 
-
     public WarriorSteps(TestContext testContext) {
         this.testContext = testContext;
     }
@@ -21,11 +20,14 @@ public class WarriorSteps {
         testContext.getTestVariables().store(name, warrior);
     }
 
-    @When("^the warrior (\\{\\w+\\}) executes a super attack on (\\{\\w+\\})$")
+    @When("^the warrior (\\{\\w+\\}) tries to execute a super attack on (\\{\\w+\\})$")
     public void executeSuperAttack(String warriorName, String targetName){
         Warrior warrior = testContext.getTestVariables().get(warriorName);
         Entity target = testContext.getTestVariables().get(targetName);
-
-        warrior.executeSuperAttack(target);
+        try{
+            warrior.executeSuperAttack(target);
+        } catch (IllegalStateException e) {
+            testContext.getTestVariables().store("last_error_message", e.getMessage());
+        }
     }
 }
